@@ -13,3 +13,8 @@ provider "aws" {
   shared_credentials_files = ["/Users/nhannguyenh/Documents/myws/terraform/.aws/credentials"]
   region                   = "ap-southeast-1"
 }
+
+# Create a new developers group
+resource "aws_iam_group" "developers" {
+  name = "developers-group"
+}

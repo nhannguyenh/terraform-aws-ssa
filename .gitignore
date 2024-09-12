@@ -1,0 +1,5 @@
+LICENSE.txt
+iam/.terraform/*
+*.hcl
+*.tfstate
+*.backup

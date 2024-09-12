@@ -18,3 +18,9 @@ provider "aws" {
 resource "aws_iam_group" "developers" {
   name = "developers-group"
 }
+
+# Attach IAMReadOnlyAccess policy to the developers group
+resource "aws_iam_group_policy_attachment" "iam_read_only_access" {
+  group      = aws_iam_group.developers.name
+  policy_arn = "arn:aws:iam::aws:policy/IAMReadOnlyAccess"
+}

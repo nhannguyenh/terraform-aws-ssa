@@ -30,9 +30,16 @@ resource "aws_iam_user" "dev1" {
   name = "dev1"
 }
 
+resource "aws_iam_user" "dev2" {
+  name = "dev2"
+}
+
 # Add dev1 to the developers group
 resource "aws_iam_group_membership" "developers_group_membership" {
   name  = "developers_group_membership"
   group = aws_iam_group.developers.name
-  users = [aws_iam_user.dev1.name]
+  users = [
+    aws_iam_user.dev1.name,
+    aws_iam_user.dev2.name
+  ]
 }

@@ -9,9 +9,13 @@ terraform {
 
 # Configure the AWS Provider
 provider "aws" {
-  shared_config_files      = ["/Users/nhannguyenh/Documents/myws/terraform/.aws/config"]
-  shared_credentials_files = ["/Users/nhannguyenh/Documents/myws/terraform/.aws/credentials"]
-  region                   = "ap-southeast-1"
+  # shared_config_files      = ["/Users/nhannguyenh/Documents/myws/terraform/.aws/config"]
+  # shared_credentials_files = ["/Users/nhannguyenh/Documents/myws/terraform/.aws/credentials"]
+  # === Personal ===
+  shared_config_files      = ["/Users/nhannguyen/Documents/Workspace/terraform/.aws/config"]
+  shared_credentials_files = ["/Users/nhannguyen/Documents/Workspace/terraform/.aws/credentials"]
+  # === Personal ===
+  region = "ap-southeast-1"
 }
 
 # Create a new developers group
@@ -42,4 +46,24 @@ resource "aws_iam_group_membership" "developers_group_membership" {
     aws_iam_user.dev1.name,
     aws_iam_user.dev2.name
   ]
+}
+
+# Create the new custom policy
+resource "aws_iam_policy" "iam_get_users_only_policy" {
+  name        = "IAMGetUserOnly"
+  path        = "/"
+  description = "Only get users from IAM service"
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : "iam:GetUser",
+        "Resource" : "*"
+      }
+    ]
+  })
 }

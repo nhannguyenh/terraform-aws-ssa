@@ -67,3 +67,24 @@ resource "aws_iam_policy" "iam_get_users_only_policy" {
     ]
   })
 }
+
+# Create a variable to store the list of policy arn
+variable "policy_arns" {
+  type = list(string)
+  default = [
+    "arn:aws:iam::aws:policy/IAMReadOnlyAccess",
+    "arn:aws:iam::211125338837:policy/IAMGetUserOnly"
+  ]
+}
+
+# a new testers group
+resource "aws_iam_group" "testers" {
+  name = "testers-group"
+}
+
+# Attach a list policy to the testers group
+resource "aws_iam_group_policy_attachment" "multiple_policies_attachment" {
+  count = length(var.policy_arns)
+  group      = aws_iam_group.testers.name
+  policy_arn = var.policy_arns[count.index]
+}
